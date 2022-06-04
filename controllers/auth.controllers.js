@@ -1,9 +1,8 @@
 import { response, request } from "express";
+import { validationResult } from "express-validator";
+
 
 export const register = async (req = request, res = response) => {
-
-    console.log(req.body);
-
     res.json({
         ok: true,
         message: 'Registro realizado con éxito'
