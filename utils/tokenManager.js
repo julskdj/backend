@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 export const generarToken = (uid) => {
     try {
 
-        const expiresIn = 60 * 15; // 15 minutos
+        const expiresIn = 60 * 60 * 4; // 4 horas 
 
         const token = jwt.sign({ uid }, process.env.JWT_SECRET_KEY, { expiresIn });
         return {token, expiresIn};
@@ -27,6 +27,22 @@ export const gernarTokenRefresh = (uid, res) => {
         
     }
 
+}
+
+export const verificarToken = (req, res, next) => {
+    let token = req.headers["x-access-token"] || req.headers["authorization"];
+    if (!token) {
+        return res.json({ ok: false, message: "No se ha enviado el token" }).status(403);
+    }
+    console.log(token)
+    token = token.split(" ")[1];
+    try {
+        const { uid } = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        req.uid = uid;
+        next();
+    } catch (error) {
+        return res.json({ ok: false, message: TokenVerificationError[error.message] }).status(403);
+    }
 }
 
 export const TokenVerificationError = {

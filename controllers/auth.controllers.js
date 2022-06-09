@@ -46,6 +46,7 @@ export const login = async (req = request, res = response) => {
       ok: true,
       message: "Login realizado con éxito",
       token,
+      email,
       expiresIn,
     });
   } catch (error) {
@@ -83,3 +84,11 @@ export const logout = async (req = request, res = response) => {
   res.clearCookie("refreshToken");
   res.json({ ok: true, message: "Logout realizado con éxito" });
 };
+
+export const verificar = async (req = request, res = response) => {
+    if (req.uid) {
+      return res.json({ ok: true, message: "Token válido" });
+    } else {
+      return res.statusCode(403).json({ ok: false, message: "Token inválido" });
+    }
+}
