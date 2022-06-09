@@ -1,29 +1,15 @@
 import express from "express";
-import { body } from "express-validator";
 import { infoUser, login, logout, refreshToken, register } from "../controllers/auth.controllers.js";
+import { requerirRefreshToken } from "../middlewares/requerirRefreshToken.js";
 import { requerirToken } from "../middlewares/requerirToken.js";
-import { validationResultExpress } from "../middlewares/validatorResultExpress.js";
+import {  bodyLoginValidator, bodyRegisterValidator } from "../middlewares/validatorManager.js";
 const router = express.Router();
 
-router.post('/login', [
-    body('email', 'Formato de email incorrecto').trim().isEmail().normalizeEmail(),
-], validationResultExpress, login)
-
-router.post('/register', [
-    body('email', 'Formato de email incorrecto').trim().isEmail().normalizeEmail(),
-    body('password', 'La contraseña debe tener al menos 6 caracteres').trim().isLength({ min: 6 })
-        .custom((value, { req }) => {
-            if (value !== req.body.repassword) {
-                throw new Error('Las contraseñas no coinciden');
-            }
-            return value;
-        })
-],
-    validationResultExpress,
-    register)
+router.post('/login', bodyLoginValidator, login)
+router.post('/register', bodyRegisterValidator, register)
 
 router.get('/protected', requerirToken ,infoUser);
-router.get('/refresh', refreshToken);
+router.get('/refresh', requerirRefreshToken, refreshToken);
 router.get('/logout', logout)
 
 export default router;

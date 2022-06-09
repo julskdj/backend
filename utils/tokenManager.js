@@ -29,16 +29,12 @@ export const gernarTokenRefresh = (uid, res) => {
 
 }
 
-export const erroresToken = (error) => {
-    switch (error) {
-        case "invalid signature":
-            return "La firma del token es inválida";
-        case "jwt expired":
-            return "El token ha expirado";
-        case "invalid token":
-            return "El token es inválido";
-        
-        default:
-            return "Error en el servidor";
-    }
+export const TokenVerificationError = {
+    ["invalid signature"]: 'La firma del token es inválida',
+    ["jwt expired"]: 'El token ha expirado',
+    ["invalid token"]: 'El token es inválido',
+    ["invalid token signature"]: 'La firma del token es inválida',
+    ["jwt malformed"]: 'El token está mal formado',
+    ["No Bearer token"]: 'Utiliza el formato Bearer token',
+    ["No JWT token"]: 'No se encontró el token JWT',
 }
