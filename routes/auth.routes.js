@@ -1,6 +1,7 @@
 import express from "express";
 import { body } from "express-validator";
-import { login, register } from "../controllers/auth.controllers.js";
+import { infoUser, login, logout, refreshToken, register } from "../controllers/auth.controllers.js";
+import { requerirToken } from "../middlewares/requerirToken.js";
 import { validationResultExpress } from "../middlewares/validatorResultExpress.js";
 const router = express.Router();
 
@@ -20,5 +21,9 @@ router.post('/register', [
 ],
     validationResultExpress,
     register)
+
+router.get('/protected', requerirToken ,infoUser);
+router.get('/refresh', refreshToken);
+router.get('/logout', logout)
 
 export default router;
