@@ -12,10 +12,26 @@ const userSchema = new mongoose.Schema({
             unique: true
         }
     },
+    username:{
+        type: String,
+        required: true,
+        trim: true,
+        unique: true,
+        lowercase: true,
+    },
     password: {
         type: String,
         required: true,
+    },
+    nombreCompleto: {
+        type: String,
+        required: true,
+    },
+    rol: {
+        type: String,
+        required: true,
     }
+
 });
 
 userSchema.pre('save', async function (next) {

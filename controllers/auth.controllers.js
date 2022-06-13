@@ -8,19 +8,19 @@ import {
 } from "../utils/tokenManager.js";
 
 export const register = async (req = request, res = response) => {
-  const { email, password } = req.body;
+  const { email, password, username, nombreCompleto, rol } = req.body;
 
   try {
-    const user = new User({ email, password });
+    const user = new User({ email, password, username, nombreCompleto, rol });
     await user.save();
 
     return res.json({ok: true, message: 'Usuario creado correctamente'});
   } catch (error) {
     if (error.code === 11000) {
-      return res.json({ ok: false, message: "El email ya existe" }).status(400);
+      return res.json({ ok: false, message: "El usuario o email ya existen" }).status(400);
     }
 
-    return res.json({ ok: false, message: "Error en el servidor" }).status(500);
+    return res.json({ ok: false, message: "Error en el servidor", mensajePersonalizado: error.message }).status(500);
   }
 };
 export const login = async (req = request, res = response) => {
@@ -28,6 +28,7 @@ export const login = async (req = request, res = response) => {
 
     const { email, password } = req.body;
     let user = await User.findOne({ email });
+    console.log(user)
     if (!user)
       return res
         .json({ ok: false, message: "Usuario no encontrado" })
@@ -47,6 +48,8 @@ export const login = async (req = request, res = response) => {
       message: "Login realizado con éxito",
       token,
       email,
+      username: user.username,
+      nombreCompleto: user.nombreCompleto,
       expiresIn,
     });
   } catch (error) {
