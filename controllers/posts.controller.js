@@ -32,8 +32,9 @@ export const editarPost = async (req = request, res = response) => {
     const { title, content } = req.body;
 
     const post = await Post.findByIdAndUpdate(id, { title, content });
+    const posts = await Post.find();
 
-    return res.json({ ok: true, message: "Post actualizado correctamente" });
+    return res.json({ ok: true, message: "Post actualizado correctamente",  posts});
   } catch (error) {
     return res.json({ ok: false, message: error.message }).status(500);
   }
