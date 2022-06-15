@@ -41,7 +41,7 @@ export const login = async (req = request, res = response) => {
         .status(403);
 
     const { token, expiresIn } = generarToken(user.id);
-    gernarTokenRefresh(user.id, res);
+    const refreshToken = gernarTokenRefresh(user.id, res);
 
     return res.json({
       ok: true,
@@ -51,6 +51,7 @@ export const login = async (req = request, res = response) => {
       username: user.username,
       nombreCompleto: user.nombreCompleto,
       expiresIn,
+      refreshToken,
     });
   } catch (error) {
     console.log(error);
@@ -76,6 +77,7 @@ export const refreshToken = async (req = request, res = response) => {
   try {
     
     const { token, expiresIn } = generarToken(req.uid);
+    console.log(token)
 
     res.json({ ok: true, token, expiresIn });
   } catch (error) {

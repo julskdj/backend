@@ -4,8 +4,10 @@ import { TokenVerificationError } from "../utils/tokenManager.js";
 
 export const requerirRefreshToken = async (req = request, res = response, next) => {
     try {
-        const refreshTokenCookie = req.cookies.refreshToken;
+        let refreshTokenCookie =  req.headers.authorization;
         if (!refreshTokenCookie) throw new Error("No JWT token");
+
+        refreshTokenCookie = refreshTokenCookie.split(" ")[1];
 
         const { uid } = jwt.verify(refreshTokenCookie, process.env.JWT_REFRESH);
         req.uid = uid;
