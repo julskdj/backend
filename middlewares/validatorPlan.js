@@ -23,5 +23,24 @@ export const validationResultExpress = (
                 }
                 return value;
             }),
+            body("tituloPlan", "Debe ingresar un titulo")
+            .isString()
+            .isLength({ min: 3 })
+            .custom((value, { req }) => {
+                if (value.length === 0) {
+                    throw new Error("Debe ingresar un titulo");
+                }
+                return value;
+            }),
+            body("precioPlan", "Debe ingresar un precio")
+            .isString()
+            .isLength({ min: 3 })
+            .custom((value, { req }) => {
+                if (value.length === 0) {
+                    throw new Error("Debe ingresar un precio");
+                }
+                return value;
+            })
+            ,
             validationResultExpress
   ]
