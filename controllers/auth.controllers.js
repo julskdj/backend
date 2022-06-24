@@ -97,3 +97,15 @@ export const verificar = async (req = request, res = response) => {
       return res.statusCode(403).json({ ok: false, message: "Token inválido" });
     }
 }
+
+export const obtenerUsuarios = async (req = request, res = response) => {
+  try {
+    
+    //Obtener todos los usuarios excepto la contraseña
+    const users = await User.find({}, { password: 0 });
+    
+    res.json({ ok: true, users });
+  } catch (error) {
+    return res.json({ ok: false, message: error.message }).status(500);
+  }
+}
