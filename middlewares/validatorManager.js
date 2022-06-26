@@ -49,3 +49,23 @@ export const bodyRegisterValidator = [
 
   validationResultExpress,
 ];
+
+export const bodyEditarUsuarioValidator = [
+  body("password", "La contraseña debe tener al menos 6 caracteres")
+    .trim()
+    .isLength({ min: 6 })
+    .custom((value, { req }) => {
+      if (value !== req.body.repassword) {
+        throw new Error("Las contraseñas no coinciden");
+      }
+      return value;
+    }),
+  body("_id", "El id del usuario es requerido").isMongoId(),
+
+  validationResultExpress,
+];
+
+export const bodyEliminarUsuarioValidator = [
+  body("_id", "El id del usuario es requerido").isMongoId(),
+  validationResultExpress,
+]
