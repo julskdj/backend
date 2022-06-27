@@ -11,7 +11,7 @@ router.post('/register', bodyRegisterValidator, verificarToken ,register)
 router.get('/verificar', verificarToken, verificar)
 router.get('/obtenerUsuarios', verificarToken, obtenerUsuarios)
 router.put('/editarUsuario', verificarToken ,bodyEditarUsuarioValidator, editarUsuario)
-router.delete('/eliminarUsuario', bodyEliminarUsuarioValidator, eliminarUsuario)
+router.delete('/eliminarUsuario', verificarToken ,bodyEliminarUsuarioValidator, eliminarUsuario)
 
 router.get('/protected', verificarToken ,infoUser);
 router.get('/refresh', requerirRefreshToken, refreshToken);
