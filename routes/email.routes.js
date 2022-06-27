@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { enviarMailMasivo } from "../controllers/mailMasivo.controllers.js";
-import { bodyMasivoEmailValidator } from "../middlewares/validatorMasivoMail.js";
+import { enviarMailMasivo, guardarEmail } from "../controllers/mailMasivo.controllers.js";
+import { requerirToken } from "../middlewares/requerirToken.js";
+import { bodyGuardarEmailValidator, bodyMasivoEmailValidator } from "../middlewares/validatorMasivoMail.js";
 
 const router = Router();
 
-router.post("/enviarMasivo", bodyMasivoEmailValidator ,enviarMailMasivo);
+router.post("/enviarMasivo", requerirToken ,bodyMasivoEmailValidator ,enviarMailMasivo);
+router.post("/guardarEmail" ,bodyGuardarEmailValidator ,guardarEmail);
 
 export default router;
