@@ -56,3 +56,42 @@ export const guardarEmail = async (req = request, res = response) => {
     res.json({ error }).status(500);
   }
 };
+
+export const contactenosMail = async (req = request, res = response) => {
+  try {
+    const { nombres, email, telefono, asunto, mensaje } = req.body;
+
+    let html = `
+    <h1>Nuevo mensaje de contacto</h1>
+    <br>
+    <p>Nombre: ${nombres}</p>
+    <p>Email: ${email}</p>
+    <p>Telefono: ${telefono}</p>
+    <p>Mensaje ${mensaje}</p>
+    `;
+
+    let mailOptions = {
+      from: "pruebas@providsaludips.com.co",
+      to: "pruebas@providsaludips.com.co",
+      subject: "Nuevo mensaje de contacto: " + asunto,
+      html,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        res.json({ error });
+      } else {
+        console.log("Email Enviado: " + info.response);
+        res.json({
+          ok: true,
+          message: "Email Enviado",
+          info: info.response,
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ error }).status(500);
+  }
+};
